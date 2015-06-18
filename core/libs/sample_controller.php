@@ -6,3 +6,18 @@
  * Time: 00:03
  */
 
+class Sample_Controller {
+
+    /**
+     * @var array
+     */
+    private $trans = array();
+
+    /**
+     *
+     * @param string $tmplate
+     */
+    public function display($tmplate = '') {
+
+    }
+}
