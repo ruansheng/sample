@@ -2,6 +2,7 @@
 /**
  * parse rewrite
  * @param $uri
+ * @return string
  */
 function rewrite($uri) {
     $parse_uri = parse_url($uri);
