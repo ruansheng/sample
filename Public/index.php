@@ -4,6 +4,7 @@
  * User: ruansheng
  * Date: 15/6/9
  * Time: 21:41
+ * http://demo.sample.com/?action=index
  */
 
 define('CORE_BASE_DIR',realpath('../core'));
