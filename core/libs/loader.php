@@ -24,3 +24,21 @@ function loader($file_path = '') {
 
     include($file);
 }
+
+/**
+ * load dir file
+ * @param $dir_array
+ */
+function loader_dir($dir_array = array()) {
+    if(!empty($dir_array) && is_array($dir_array)) {
+        $paths = implode(PATH_SEPARATOR, $dir_array);
+        set_include_path($paths);
+        foreach($dir_array as $dir) {
+            $dir = opendir($dir);
+            while (($file = readdir($dir)) !== false) {
+                include($file);
+            }
+            closedir($dir);
+        }
+    }
+}
