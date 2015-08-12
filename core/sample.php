@@ -21,7 +21,8 @@ require_once(CORE_BASE_DIR.'/libs/loader.php');
  * run frame
  */
 function run() {
-    Loader('libs::cookie.php');
-    //运行路由
-    $file = rewrite(URI);
+    Loader('libs::request.php');
+
+    //run rewrite
+    rewrite(URI);
 }

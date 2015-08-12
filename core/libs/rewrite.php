@@ -12,8 +12,16 @@ function rewrite($uri) {
             $paths[] = $v;
         }
     }
-    $file_name = array_pop($paths).'_controller.php';
-    $file_path = APP_BASE_DIR.'/'.implode('/',$paths);
+    $class_name = array_pop($paths);
+    $func_action = Request::get('action');
+    if(empty($class_name)) {
+        $class_name = 'index';
+    }
+    if(empty($func_action)) {
+        $func_action = 'index';
+    }
+    $file_name = $class_name . '_controller.php';
+    $file_path = APP_BASE_DIR.implode('/',$paths);
     $file = $file_path.'/'.$file_name;
     return $file;
 }
