@@ -22,6 +22,7 @@ require_once(CORE_BASE_DIR.'/libs/loader.php');
  */
 function run() {
     Loader('libs::request.php');
+    loader_dir(array(CORE_BASE_DIR.'/funcs'));
 
     //run rewrite
     rewrite(URI);

@@ -36,7 +36,9 @@ function loader_dir($dir_array = array()) {
         foreach($dir_array as $dir) {
             $dir = opendir($dir);
             while (($file = readdir($dir)) !== false) {
-                include($file);
+                if($file != '.' && $file != '..') {
+                    include($file);
+                }
             }
             closedir($dir);
         }

@@ -31,3 +31,11 @@ function __autoload($calss_name) {
 function isAjax() {
     return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'XMLHttpRequest';
 }
+
+/**
+ * template
+ * @param $text
+ */
+function errorTemplate($text) {
+    echo '<div style="width:800px;height:50px;line-height:50px;margin:0 auto;margin-top:200px;border:1px solid gray;color:red;text-align:center;">'.$text.'</div>';
+}

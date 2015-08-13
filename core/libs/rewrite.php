@@ -16,13 +16,16 @@ function rewrite($uri) {
     $class_name = array_pop($paths);
     $func_action = Request::get('action');
     if(empty($class_name)) {
-        $class_name = 'index';
+        $class_name = 'index_controller';
     }
     if(empty($func_action)) {
         $func_action = 'index';
     }
-    $file_name = $class_name . '_controller.php';
-    $file_path = APP_BASE_DIR.implode('/',$paths);
+    $file_name = $class_name . '.php';
+    $file_path = APP_BASE_DIR.'/controller'.implode('/',$paths);
     $file = $file_path.'/'.$file_name;
-    return $file;
+    include($file);
+
+    $controller = new $class_name();
+    $controller->$func_action();
 }

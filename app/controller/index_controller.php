@@ -6,4 +6,13 @@
  * Time: 23:09
  */
 
-_dump('index_controller.php');
+class index_controller extends Sample_Controller{
+
+    public function __construct() {
+    }
+
+    public function index() {
+        $this->echoJson(array('en'=>'200','em'=>'success'));
+    }
+
+}

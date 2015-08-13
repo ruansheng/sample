@@ -20,4 +20,23 @@ class Sample_Controller {
     public function display($tmplate = '') {
 
     }
+
+    /**
+     * echo Json
+     * @param $data
+     */
+    public function echoJson($data) {
+        header('Content-Type:text/json;charset=utf-8;');
+        exit(json_encode($data));
+    }
+
+    /**
+     * __call
+     * @param $action
+     * @param $params
+     */
+    public function __call($action,$params) {
+        $notice = 'notice :  "'.$action.'" method is not exists !'.PHP_EOL;
+        errorTemplate($notice);
+    }
 }
