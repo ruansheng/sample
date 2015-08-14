@@ -10,7 +10,7 @@
  * load file
  * @param $file_path
  */
-function loader($file_path = '') {
+function Loader_core($file_path = '') {
     if ($file_path == '') {
         echo '[' . __FUNCTION__ . '] file path is empty';
         exit;

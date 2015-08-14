@@ -8,12 +8,6 @@
 class Request {
 
     /**
-     * GET POST REQUEST
-     * @var array
-     */
-    static private $request = array();
-
-    /**
      * Filter type
      * @var array
      */
@@ -29,7 +23,6 @@ class Request {
      * @return array
      */
     public static function get($key='', $default = '') {
-        $tmp = '';
         if($key == '') {
             $tmp = self::_filter($_GET);
         } else {
@@ -52,10 +45,17 @@ class Request {
      */
     public static function post($key='', $default = '') {
         if($key == '') {
-            return self::_filter($_POST);
+            $tmp = self::_filter($_POST);
         } else {
-            return self::_filter($_POST[$key]);
+            $tmp = self::_filter($_POST[$key]);
         }
+
+        if(!empty($default)) {
+            if(empty($tmp)) {
+                $tmp = $default;
+            }
+        }
+        return $tmp;
     }
 
     /**

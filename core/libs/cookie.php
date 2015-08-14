@@ -5,4 +5,11 @@
  * Date: 15/6/9
  * Time: 22:03
  */
-echo 'cookie.php';
+
+class Cookie {
+
+    public function getCookie() {
+        _dump(__FUNCTION__);
+    }
+
+}

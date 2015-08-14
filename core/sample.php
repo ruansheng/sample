@@ -14,16 +14,18 @@ defined('CORE_BASE_DIR') || define('CORE_BASE_DIR',dirname(__FILE__));
 
 //load frame libs
 require_once(CORE_BASE_DIR.'/libs/func.php');
-require_once(CORE_BASE_DIR.'/libs/rewrite.php');
 require_once(CORE_BASE_DIR.'/libs/loader.php');
+
+Loader_core('libs::request.php');
+Loader_core('libs::rewrite.php');
+loader_dir(array(CORE_BASE_DIR.'/funcs'));
 
 /**
  * run frame
  */
 function run() {
-    Loader('libs::request.php');
-    loader_dir(array(CORE_BASE_DIR.'/funcs'));
-
     //run rewrite
     rewrite(URI);
 }
+
+run();
