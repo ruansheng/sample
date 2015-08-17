@@ -13,8 +13,8 @@ defined('METHOD') || define('METHOD',$_SERVER['REQUEST_METHOD']);
 defined('CORE_BASE_DIR') || define('CORE_BASE_DIR',dirname(__FILE__));
 
 //load frame libs
-require_once(CORE_BASE_DIR.'/libs/func.php');
-require_once(CORE_BASE_DIR.'/libs/loader.php');
+require_once(CORE_BASE_DIR . '/libs/func.php');
+require_once(CORE_BASE_DIR . '/libs/loader.php');
 
 Loader_core('libs::request.php');
 Loader_core('libs::rewrite.php');
