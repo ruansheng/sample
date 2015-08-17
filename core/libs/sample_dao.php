@@ -10,6 +10,5 @@
  * Class sample_dao
  */
 class sample_dao extends Base{
-
-
+    
 }
