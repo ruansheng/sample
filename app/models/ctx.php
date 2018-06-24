@@ -1,12 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ruansheng
- * Date: 2018/6/24
- * Time: 下午3:10
- */
-
-/**
  * Class Ctx
  * @property User_Ctx $user
  */

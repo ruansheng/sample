@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ruansheng
- * Date: 2018/6/24
- * Time: 下午4:38
- */
 
 /**
  * Class User_Ctx

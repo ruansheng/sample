@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ruansheng
- * Date: 15/6/9
- * Time: 21:41
- */
 
 date_default_timezone_set('PRC');
 

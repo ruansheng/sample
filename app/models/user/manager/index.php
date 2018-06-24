@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ruansheng
- * Date: 2018/6/24
- * Time: 下午4:35
- */
 
 /**
  * Class User_Manager_Index
