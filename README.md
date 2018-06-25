@@ -11,6 +11,11 @@ server{
 		index index.php index.html index.htm;
  		rewrite ^/(.*) /index.php/$1 last;
 	}
+
+    location ~* \.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css)$ {
+        root /Users/ruansheng/PhpstormProjects/sample/static;
+    }
+
 	location ~ \.php {
             fastcgi_pass   127.0.0.1:9000;
             fastcgi_index  index.php;
@@ -23,4 +28,13 @@ server{
             include        fastcgi_params;
     }
 }
+```
+
+## Access method
+```
+php file:
+    http://demo.sample.com/test/index/index
+
+static file:
+    http://demo.sample.com/css/1.css
 ```
