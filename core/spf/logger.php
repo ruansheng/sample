@@ -2,33 +2,36 @@
 
 function errorHandler($errno, $errstr, $errfile, $errline) {
     if (!(error_reporting() & $errno)) {
-        // This error code is not included in error_reporting, so let it fall
-        // through to the standard PHP error handler
         return false;
     }
 
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
     switch ($errno) {
         case E_USER_ERROR:
-            echo "<b>My ERROR</b> [$errno] $errstr<br />\n";
-            echo "  Fatal error on line $errline in file $errfile";
-            echo ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
-            echo "Aborting...<br />\n";
-            exit(1);
+        case E_ERROR:
+            $error_type = 'Error';
             break;
-
         case E_USER_WARNING:
-            echo "<b>My WARNING</b> [$errno] $errstr<br />\n";
+        case E_WARNING:
+            $error_type = 'Warning';
             break;
-
         case E_USER_NOTICE:
-            echo "<b>My NOTICE</b> [$errno] $errstr<br />\n";
+        case E_NOTICE:
+            $error_type = 'Notice';
             break;
-
         default:
-            echo "Unknown error type: [$errno] $errstr<br />\n";
+            $error_type = 'Unknown';
             break;
     }
 
-    /* Don't execute PHP internal error handler */
+    $timezone = date_default_timezone_get();
+    $request_uri_content = $request_uri ? sprintf('   [REQUEST_URI:%s]', $request_uri) : '   [REQUEST_URI: Unkown]';
+    $text = sprintf("[ %s %s] %s  %s in %s  on line %s %s \n", date('d-M-Y H:i:s', time()), $timezone, $error_type, $errstr, $errfile, $errline, $request_uri_content);
+
+    $log_file = '/var/log/php.fpm.log';
+    if(is_writeable($log_file)) {
+        file_put_contents($log_file, $text, FILE_APPEND);
+    }
+
     return true;
 }

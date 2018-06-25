@@ -11,7 +11,7 @@ class Core_Ctx {
     public function __construct($ctx = null){
         $class = get_class($this);
         if(!$this->prefix) {
-            $pos = strpos($class, '_');
+            $pos = strrpos($class, '_');
             if($pos !== false) {
                 $this->prefix = substr($class, 0, $pos + 1);
             }
