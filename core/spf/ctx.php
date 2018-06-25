@@ -1,18 +1,20 @@
 <?php
 
+/**
+ * Class Core_Ctx
+ */
 class Core_Ctx {
 
-    protected $ctx;
-    protected $class;
     protected $component = [];
     protected $prefix = '';
 
     public function __construct($ctx = null){
-        $this->ctx = $ctx ? : $this;
-        $this->class = get_class($this);
+        $class = get_class($this);
         if(!$this->prefix) {
-            $pos = strpos($this->class, '_');
-            $this->prefix = $pos !== false ? substr($this->class, 0, $pos + 1) : '';
+            $pos = strpos($class, '_');
+            if($pos !== false) {
+                $this->prefix = substr($class, 0, $pos + 1);
+            }
         }
     }
 

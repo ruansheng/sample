@@ -21,7 +21,14 @@ class Ctx extends Core_Ctx {
             require_once $file;
         }
 
-        return class_exists($class, false) || interface_exists($class, false);
+        if(class_exists($class, false)) {
+            return true;
+        }
+        if(interface_exists($class, false)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function getUser() {

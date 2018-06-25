@@ -3,10 +3,10 @@
 class Base_Controller {
 
     protected $ctx;
+    protected $base_ctx;
 
     public function __construct() {
-        require_once CORE_DIR . '/ctx.php';
-        require_once APP_DIR . '/models/ctx.php';
         $this->ctx = Ctx::getInstance();
+        $this->base_ctx = Base_Ctx::getInstance();
     }
 }

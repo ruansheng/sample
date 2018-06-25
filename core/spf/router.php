@@ -1,6 +1,10 @@
 <?php
 
+/**
+ * Class Router
+ */
 class Router {
+
     public $controller = 'index';
     public $action = 'index';
 
@@ -31,10 +35,13 @@ class Router {
 
         if(count($parts) > 0) {
             $file = implode('/', $parts) . '/' . $controller . '_controller.php';
-            $controller = implode('_', $parts) . '_' . $controller . '_controller';
+            $partsArray = array_map(function ($v){
+                return ucfirst($v);
+            }, $parts);
+            $controller = implode('_', $partsArray) . '_' . ucfirst($controller) . '_Controller';
         } else {
             $file = $controller . '_controller.php';
-            $controller = $controller . '_controller';
+            $controller = ucfirst($controller) . '_Controller';
         }
 
         return [
