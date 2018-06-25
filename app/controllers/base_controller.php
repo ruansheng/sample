@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class Base_Controller
+ */
 class Base_Controller {
 
     protected $ctx;
