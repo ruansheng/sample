@@ -1,0 +1,137 @@
+package main
+
+import (
+"bufio"
+"bytes"
+"errors"
+"fmt"
+"io"
+"net"
+"strconv"
+//	"time"
+)
+
+const (
+LF = '\n'
+CR = '\r'
+)
+
+//
+type conn struct {
+c  net.Conn
+rd *bufio.Reader
+}
+
+func NewConn(c net.Conn) *conn {
+return &conn{
+c:  c,
+rd: bufio.NewReader(c),
+}
+}
+
+func (c *conn) ReadCommands() error {
+err := c.skipByte('*')
+if err != nil {
+return err
+}
+numArgs, err := c.readUint()
+if err != nil {
+return err
+}
+err = c.skipByte(LF)
+if err != nil {
+return err
+}
+
+cmds := make([][]byte, numArgs)
+for i := uint(0); i < numArgs; i++ {
+err = c.skipByte('$')
+if err != nil {
+return err
+}
+n, err := c.readUint()
+if err != nil {
+return err
+}
+if err = c.skipByte(LF); err != nil {
+return err
+}
+cmds[i] = make([]byte, n)
+_, err = io.ReadFull(c.rd, cmds[i])
+if err != nil {
+return err
+}
+err = c.skipBytes([]byte{CR, LF})
+if err != nil {
+return err
+}
+}
+for _, cm := range cmds {
+fmt.Println(string(cm))
+}
+
+return nil
+}
+
+func (c *conn) readUint() (uint, error) {
+bytes, err := c.rd.ReadBytes(CR)
+if err != nil {
+return 0, err
+}
+v, err := strconv.Atoi(byteSliceToString(bytes[:len(bytes)-1]))
+if err != nil {
+return 0, errors.New(fmt.Sprintf("redis msg error: %s", err))
+}
+if v < 0 {
+return 0, errors.New(fmt.Sprintf("redis msg error: negative[%d] paramater description", v))
+}
+return uint(v), nil
+}
+
+func byteSliceToString(b []byte) string {
+return string(b)
+}
+
+func (c *conn) skipByte(required byte) error {
+b, err := c.rd.ReadByte()
+if err != nil {
+return err
+}
+if b != required {
+return errors.New(fmt.Sprintf("redis msg error: expect %q actual %q", required, b))
+}
+return nil
+}
+
+func (c *conn) skipBytes(required []byte) error {
+bs, err := c.rd.ReadBytes(LF)
+if err != nil {
+return err
+}
+if !bytes.Equal(required, bs) {
+return errors.New("redis msg error: ")
+}
+return nil
+}
+
+func main() {
+ln, err := net.Listen("tcp", ":8089")
+if err != nil {
+// handle error
+}
+
+for {
+co, err := ln.Accept()
+if err != nil {
+// handle error
+continue
+}
+c := NewConn(co)
+go handleConnection(c)
+}
+fmt.Println(err)
+}
+
+func handleConnection(c *conn) {
+c.ReadCommands()
+}
