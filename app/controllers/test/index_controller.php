@@ -12,5 +12,6 @@ class Test_Index_Controller extends Base_Controller {
 
         $admin = $this->base_ctx->admin->manager_info->getInfo();
         var_dump($admin);
+        _dump($admin);
     }
 }

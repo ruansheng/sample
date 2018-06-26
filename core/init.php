@@ -1,9 +1,6 @@
 <?php
 
-// set error logger
-require_once CORE_DIR . '/spf/logger.php';
-set_error_handler("errorHandler");
-
+// require core
 require_once CORE_DIR . '/spf/app.php';
 require_once CORE_DIR . '/spf/router.php';
 require_once CORE_DIR . '/spf/autoloader.php';
