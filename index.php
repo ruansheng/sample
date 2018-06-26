@@ -17,8 +17,8 @@ $vendor_file = '';
 require_once COMMON_DIR . '/init.php';
 
 // require packagist vendor
-if(is_file(VENDOR_DIR.'/autoload.php')) {
-    require_once VENDOR_DIR.'/autoload.php';
+if(is_file(VENDOR_DIR . '/autoload.php')) {
+    require_once VENDOR_DIR . '/autoload.php';
 }
 
 // require core
