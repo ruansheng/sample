@@ -54,4 +54,7 @@ Example:
     function echo helloWorld() {
         echo 'hello world!';
     }
+    
+Call in other php file:
+    helloWorld();    
 ```
