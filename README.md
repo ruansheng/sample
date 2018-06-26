@@ -38,3 +38,20 @@ php file:
 static file:
     http://demo.sample.com/css/1.css
 ```
+
+## support composer package
+```
+1. define vendor autoload file
+   ./vendor/autoload.php 
+2. edit ./composer.json file
+3. composer install
+```
+
+## define self functions
+```
+Example:
+    # vim common/component/functions.php
+    function echo helloWorld() {
+        echo 'hello world!';
+    }
+```
