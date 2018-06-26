@@ -2,9 +2,11 @@
 
 date_default_timezone_set('PRC');
 
+// define vendor file
+defined('VENDOR_AUTOLOAD_FILE') || define('VENDOR_AUTOLOAD_FILE', dirname(__FILE__) . '/vendor/autoload.php');
+
 // define dirs
 defined('COMMON_DIR') || define('COMMON_DIR', dirname(__FILE__) . '/common');
-defined('VENDOR_DIR') || define('VENDOR_DIR', dirname(__FILE__) . '/vendor');
 defined('CORE_DIR') || define('CORE_DIR', dirname(__FILE__) . '/core');
 defined('BASE_DIR') || define('BASE_DIR', dirname(__FILE__) . '/base');
 defined('APP_DIR') || define('APP_DIR', dirname(__FILE__) . '/app');
@@ -17,8 +19,8 @@ $vendor_file = '';
 require_once COMMON_DIR . '/init.php';
 
 // require packagist vendor
-if(is_file(VENDOR_DIR . '/autoload.php')) {
-    require_once VENDOR_DIR . '/autoload.php';
+if(is_file(VENDOR_AUTOLOAD_FILE)) {
+    require_once VENDOR_AUTOLOAD_FILE;
 }
 
 // require core
