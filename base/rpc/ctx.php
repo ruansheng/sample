@@ -49,10 +49,10 @@ class Base_Rpc_ctx extends Core_Ctx {
 
     /**
      * @param $config
-     * @return string
+     * @return array
      */
     public function lookupSearchAddr($config) {
-        return ['127.0.0.1', 6379];
+        return ['172.16.20.163', 8628];
     }
 
 }

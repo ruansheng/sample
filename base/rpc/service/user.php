@@ -2,5 +2,5 @@
 
 interface Base_Rpc_Service_User {
 
-    function getUserInfo($uid);
+    function sayHello($uid);
 }

@@ -38,14 +38,20 @@ class Base_Rpc_Client_Redis {
             $args[$key] = $arguments[$i];
         }
 
-        $cmd = $this->getCmd($this->service, $this->timeout, $args);
+        $cmd = $this->getCmd($this->service, $methodName, $args);
+
+        $s = microtime(true) * 1000;
 
         $client = new Redis();
         if ($client->pconnect($this->addr[0], (int)$this->addr[1], (float)$this->timeout)) {
             trigger_error("morpc redis connect err:" . $this->service, E_USER_WARNING);
         }
-
+        _dump($cmd);
+        _dump(json_encode($cmd));
         $ret = $client->get(json_encode($cmd));
+        $e = microtime(true) * 1000;
+        $b = $e - $s;
+        var_dump($b);
         return $ret;
     }
 

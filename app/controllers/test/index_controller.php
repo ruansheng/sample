@@ -17,7 +17,16 @@ class Test_Index_Controller extends Base_Controller {
         */
 
         //_dump($this->base_ctx->rpc);
-        $user = $this->base_ctx->rpc->user->getUserInfo(2);
-        _dump($user);
+
+        for($i = 0; $i < 1; $i++) {
+            //$s = microtime(true) * 1000;
+            $user = $this->base_ctx->rpc->user->sayHello(2);
+            $e = microtime(true) * 1000;
+
+            //$b = $e - $s;
+            //var_dump($b);
+            //_dump($user);
+            //sleep(2);
+        }
     }
 }
