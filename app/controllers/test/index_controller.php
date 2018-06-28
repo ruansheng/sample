@@ -29,4 +29,9 @@ class Test_Index_Controller extends Base_Controller {
             //sleep(2);
         }
     }
+
+    public function demo() {
+        $this->output['name'] = 'rs';
+        $this->responseJson();
+    }
 }
