@@ -50,7 +50,17 @@ class Base_Rpc_ctx {
             return null;
         }
 
+<<<<<<< HEAD
         return new Base_Rpc_Client_Redis($config, $serviceAddr);
+=======
+    /**
+     * @param $config
+     * @return array
+     */
+    public function lookupSearchAddr($config) {
+        //return ['172.16.20.163', 8628];
+        return ['172.16.20.213', 8628];
+>>>>>>> f8574cc977e01b02133e4f435d33c2d711312589
     }
 
 }
