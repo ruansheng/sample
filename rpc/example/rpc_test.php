@@ -19,7 +19,8 @@ class Test {
     }
 
     public function echoTest() {
-        $this->rpc->user->sayHello(uniqid());
+        $a = $this->rpc->user->sayHello(uniqid());
+        var_dump($a);
     }
 }
 
