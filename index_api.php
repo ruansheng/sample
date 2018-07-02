@@ -9,7 +9,8 @@ defined('VENDOR_AUTOLOAD_FILE') || define('VENDOR_AUTOLOAD_FILE', dirname(__FILE
 defined('COMMON_DIR') || define('COMMON_DIR', dirname(__FILE__) . '/common');
 defined('CORE_DIR') || define('CORE_DIR', dirname(__FILE__) . '/core');
 defined('BASE_DIR') || define('BASE_DIR', dirname(__FILE__) . '/base');
-defined('APP_DIR') || define('APP_DIR', dirname(__FILE__) . '/app');
+defined('APPS_DIR') || define('APPS_DIR', dirname(__FILE__) . '/apps');
+defined('MODELS_DIR') || define('MODELS_DIR', dirname(__FILE__) . '/models');
 
 // log collect file
 $GLOBALS['log_file'] = '/var/log/php-fpm.log';
@@ -30,7 +31,10 @@ require_once CORE_DIR . '/init.php';
 require_once BASE_DIR . '/init.php';
 
 // require app
-require_once APP_DIR . '/init.php';
+require_once APPS_DIR . '/api/init_api.php';
 
-$controller_path = APP_DIR . '/controllers/';
-APP::getInstance()->run($controller_path);
+// require app models
+require_once MODELS_DIR . '/ctx.php';
+
+$controller_path = APPS_DIR . '/api/controllers/';
+APP::getInstance()->runApi($controller_path);

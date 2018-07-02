@@ -21,6 +21,13 @@ class Base_Ctx extends Core_Ctx {
     }
 
     public function getRpc() {
-        return new Base_Rpc_Ctx($this);
+        $config = [
+            'lookup' =>[
+                'host' => '127.0.0.1',
+                'port' => 6379,
+                'timeout' => 0.3
+            ]
+        ];
+        return new Base_Rpc_Ctx($config);
     }
 }

@@ -6,53 +6,51 @@ require BASE_DIR . '/rpc/config/config.php';
  * Class Base_Rpc_ctx
  * @property Base_Rpc_Service_User $user
  */
-class Base_Rpc_ctx extends Core_Ctx {
-
-    /**
-     * @var Base_Ctx
-     */
-    protected $ctx;
+class Base_Rpc_ctx {
 
     protected $services;
-
     protected $components;
 
-    public function __construct($ctx){
-        $this->ctx = $ctx;
-        parent::__construct($ctx);
+    private $lookup;
+
+    /**
+     * Rpc_App_Ctx constructor.
+     * @param $config
+     */
+    public function __construct($config = []){
         $this->services = $GLOBALS['rpc'];
+
+        $addr = isset($config['lookup']) ? $config['lookup'] : [];
+        $this->lookup = new base_Rpc_Client_Lookup($addr);
     }
 
+    /**
+     * @param $key
+     * @return Rpc_App_Client_Redis
+     */
     public function __get($key){
         if(!array_key_exists($key, $this->services)) {
             return null;
         }
         if(!isset($this->components[$key])) {
-            $this->component[$key] = $this->getClient($key);
+            $this->components[$key] = $this->getClient($key);
         }
-        return $this->component[$key];
+        return $this->components[$key];
     }
 
     /**
      * @param $key
-     * @return Base_Rpc_Client_Redis
+     * @return Rpc_App_Client_Redis
      */
-    public function getClient($key) {
+    private function getClient($key) {
         $config = $this->services[$key];
 
-        // lookup search rpc addr
-        $addr = $this->lookupSearchAddr($config);
+        $serviceAddr = $this->lookup->request($config);
+        if(!isset($serviceAddr['host']) || !isset($serviceAddr['port'])) {
+            return null;
+        }
 
-        // return client
-        return new Base_Rpc_Client_Redis($config, $addr);
-    }
-
-    /**
-     * @param $config
-     * @return array
-     */
-    public function lookupSearchAddr($config) {
-        return ['172.16.20.163', 8628];
+        return new Base_Rpc_Client_Redis($config, $serviceAddr);
     }
 
 }

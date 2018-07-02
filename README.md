@@ -9,7 +9,7 @@ server{
 	root /Users/ruansheng/PhpstormProjects/sample;
 	location / {
 		index index.php index.html index.htm;
- 		rewrite ^/(.*) /index.php/$1 last;
+ 		rewrite ^/(.*) /index_api.php/$1 last;
 	}
 
     location ~* \.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css)$ {

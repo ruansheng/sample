@@ -2,7 +2,7 @@
 
 class Base_Rpc_Client_Redis {
 
-    private $timeout;
+    private $timeout = 0.2;
     private $service;
     private $interface;
     private $reflectClass;
@@ -12,9 +12,10 @@ class Base_Rpc_Client_Redis {
     public function __construct($config, $addr){
         $this->addr = $addr;
 
-        $this->timeout = $config['timeout'];
-        $this->service = $config['service'];
-        $this->interface = $config['interface'];
+        $this->timeout = isset($config['timeout']) ? $config['timeout'] : 0.2;
+        $this->service = isset($config['service']) ? $config['service'] : '';
+        $this->interface = isset($config['interface']) ? $config['interface'] : '';
+
         $this->reflectClass = new ReflectionClass($this->interface);
     }
 
@@ -40,19 +41,26 @@ class Base_Rpc_Client_Redis {
 
         $cmd = $this->getCmd($this->service, $methodName, $args);
 
-        $s = microtime(true) * 1000;
+        $result = null;
+        try {
+            $client = new Redis();
+            if ($client->pconnect($this->addr['host'], (int)$this->addr['port'], (float)$this->timeout)) {
+                $error_str = sprintf("rpc redis connect err:%s (%s:%d)", $this->service, $this->addr['host'], $this->addr['port'], $this->service);
+                trigger_error($error_str, E_USER_WARNING);
+            }
 
-        $client = new Redis();
-        if ($client->pconnect($this->addr[0], (int)$this->addr[1], (float)$this->timeout)) {
-            trigger_error("morpc redis connect err:" . $this->service, E_USER_WARNING);
+            $ret = $client->get(json_encode($cmd));
+            $result  = $ret ? json_decode($ret, true) : null;
+        } catch(Exception $e) {
+            $error_str = sprintf("rpc redis call err:%s (%s)", $e->getMessage(), $this->service);
+            trigger_error($error_str, E_USER_WARNING);
         }
-        _dump($cmd);
-        _dump(json_encode($cmd));
-        $ret = $client->get(json_encode($cmd));
-        $e = microtime(true) * 1000;
-        $b = $e - $s;
-        var_dump($b);
-        return $ret;
+
+        if(empty($result) || !isset($ret['ec']) || $ret['ec'] != 200) {
+            return null;
+        }
+
+        return isset($ret['data']) ? $ret['data'] : [];
     }
 
     public function getCmd($service, $method, $args) {
@@ -64,4 +72,5 @@ class Base_Rpc_Client_Redis {
         ];
         return $cmd;
     }
+
 }

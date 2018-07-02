@@ -26,7 +26,7 @@ class App {
         return null;
     }
 
-    public function run($controller_path) {
+    public function runApi($controller_path) {
         $router = $this->router->route();
 
         $file = $controller_path. $router['file'];
@@ -49,4 +49,77 @@ class App {
         $controller_obj = new $controller();
         $controller_obj->$action();
     }
+
+    public function runWeb($controller_path) {
+        $router = $this->router->route();
+
+        $file = $controller_path. $router['file'];
+
+        if(!is_file($file)) {
+            trigger_error($file . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file;
+
+        $controller = $router['controller'];
+        $action = $router['action'];
+
+        if(!class_exists($controller, false)) {
+            trigger_error($file . ' controller not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $controller_obj = new $controller();
+        $controller_obj->$action();
+    }
+
+    public function runRpc($controller_path) {
+        $router = $this->router->route();
+
+        $file = $controller_path. $router['file'];
+
+        if(!is_file($file)) {
+            trigger_error($file . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file;
+
+        $controller = $router['controller'];
+        $action = $router['action'];
+
+        if(!class_exists($controller, false)) {
+            trigger_error($file . ' controller not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $controller_obj = new $controller();
+        $controller_obj->$action();
+    }
+
+    public function runCron($controller_path) {
+        $router = $this->router->route();
+
+        $file = $controller_path. $router['file'];
+
+        if(!is_file($file)) {
+            trigger_error($file . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file;
+
+        $controller = $router['controller'];
+        $action = $router['action'];
+
+        if(!class_exists($controller, false)) {
+            trigger_error($file . ' controller not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $controller_obj = new $controller();
+        $controller_obj->$action();
+    }
+
 }
