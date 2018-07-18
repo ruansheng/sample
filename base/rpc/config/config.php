@@ -1,7 +1,7 @@
 <?php
 
 $GLOBALS['rpc'] = [
-    'user' => [
+    'test' => [
         'service' => 'test',
         'interface' => 'Base_Rpc_Service_Test',
         'timeout' => 0.3
