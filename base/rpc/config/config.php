@@ -2,8 +2,8 @@
 
 $GLOBALS['rpc'] = [
     'user' => [
-        'service' => 'test_rpc',
-        'interface' => 'Base_Rpc_Service_User',
+        'service' => 'test',
+        'interface' => 'Base_Rpc_Service_Test',
         'timeout' => 0.3
     ]
 ];

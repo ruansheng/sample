@@ -1,6 +1,6 @@
 <?php
 
-interface Base_Rpc_Service_User {
+interface Base_Rpc_Service_Test {
 
     function sayHello($uid);
 }

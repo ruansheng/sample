@@ -26,7 +26,12 @@ class Base_Ctx extends Core_Ctx {
                 'host' => '127.0.0.1',
                 'port' => 6379,
                 'timeout' => 0.3
-            ]
+            ],
+            'direct' => [
+                'host' => '172.16.21.243',
+                'port' => 8628,
+                'timeout' => 0.3
+            ],
         ];
         return new Base_Rpc_Ctx($config);
     }
