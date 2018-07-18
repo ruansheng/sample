@@ -31,10 +31,10 @@ require_once CORE_DIR . '/init.php';
 require_once BASE_DIR . '/init.php';
 
 // require app
-require_once APPS_DIR . '/web/init_web.php';
+require_once APPS_DIR . '/cron/init_cron.php';
 
 // require app models
 require_once MODELS_DIR . '/ctx.php';
 
-$controller_path = APPS_DIR . '/web/controllers/';
-APP::getInstance()->runWeb($controller_path);
+$controller_path = APPS_DIR . '/cron/controllers/';
+APP::getInstance()->runCron($controller_path);

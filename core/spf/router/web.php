@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class Router
+ * Class WebRouter
  */
-class Router {
+class WebRouter {
 
     public $controller = 'index';
     public $action = 'index';

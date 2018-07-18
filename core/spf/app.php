@@ -1,9 +1,8 @@
-
 <?php
-
 /**
  * Class App
- * @property Router $router
+ * @property WebRouter $web_router
+ * @property CronRouter $cron_router
  */
 class App {
     static $instance = null;
@@ -20,14 +19,16 @@ class App {
     }
 
     public function __get($key) {
-        if($key == 'router') {
-            return new Router();
+        if($key == 'web_router') {
+            return new WebRouter();
+        } else if ($key == 'cron_router') {
+            return new CronRouter();
         }
         return null;
     }
 
     public function runApi($controller_path) {
-        $router = $this->router->route();
+        $router = $this->web_router->route();
 
         $file = $controller_path. $router['file'];
 
@@ -51,7 +52,7 @@ class App {
     }
 
     public function runWeb($controller_path) {
-        $router = $this->router->route();
+        $router = $this->web_router->route();
 
         $file = $controller_path. $router['file'];
 
@@ -75,7 +76,7 @@ class App {
     }
 
     public function runRpc($controller_path) {
-        $router = $this->router->route();
+        $router = $this->web_router->route();
 
         $file = $controller_path. $router['file'];
 
@@ -99,7 +100,7 @@ class App {
     }
 
     public function runCron($controller_path) {
-        $router = $this->router->route();
+        $router = $this->cron_router->route();
 
         $file = $controller_path. $router['file'];
 
@@ -119,7 +120,12 @@ class App {
         }
 
         $controller_obj = new $controller();
+        $controller_obj->file = $file;
+        $controller_obj->method = $action;
+        $controller_obj->start_time = microtime(true);
         $controller_obj->$action();
+        $controller_obj->end_time = microtime(true);
+        $info = "info";
+        $controller_obj->$info();
     }
-
 }
