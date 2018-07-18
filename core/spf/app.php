@@ -1,8 +1,9 @@
 <?php
 /**
  * Class App
- * @property WebRouter $web_router
+ * @property WebRouter  $web_router
  * @property CronRouter $cron_router
+ * @property RpcRouter  $rpc_router
  */
 class App {
     static $instance = null;
@@ -23,6 +24,8 @@ class App {
             return new WebRouter();
         } else if ($key == 'cron_router') {
             return new CronRouter();
+        } else if ($key == 'rpc_router') {
+            return new RpcRouter();
         }
         return null;
     }
@@ -76,7 +79,7 @@ class App {
     }
 
     public function runRpc($controller_path) {
-        $router = $this->web_router->route();
+        $router = $this->rpc_router->route();
 
         $file = $controller_path. $router['file'];
 

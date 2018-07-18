@@ -36,13 +36,5 @@ require_once APPS_DIR . '/rpc/init_rpc.php';
 // require app models
 require_once MODELS_DIR . '/ctx.php';
 
-// parse rpc params
-$input_data = file_get_contents('php://input', 'r');
-$input = json_decode($input_data, true);
-
-$service = $input['service'];//    /service/php/test_index
-$args    = $input['args'];
-$method  = $input['method'];
-
 $controller_path = APPS_DIR . '/rpc/controllers/';
 APP::getInstance()->runRpc($controller_path);
