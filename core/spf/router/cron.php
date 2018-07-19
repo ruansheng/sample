@@ -7,8 +7,8 @@ class CronRouter {
 
     public function __construct(){}
 
-    private function parseArgv($params) {
-        if(count($params) == 1) {
+    private function parseArgv($argv) {
+        if(count($argv) == 1) {
             $this->echoHelp();
             exit;
         }
@@ -16,7 +16,8 @@ class CronRouter {
         $file = "";
         $controller = "";
         $action = "";
-        foreach($params as $index => $spe) {
+        $params = [];
+        foreach($argv as $index => $spe) {
             if($index == 0) {
                 continue;
             }
@@ -37,13 +38,16 @@ class CronRouter {
                 $controller = implode('_', $parts) . '_Controller';
             } elseif (strpos($spe, "-m=") === 0) {
                 $action = substr($spe, 3);
+            } elseif (strpos($spe, "-p=") === 0) {
+                parse_str(substr($spe, 3), $params);
             }
         }
 
         $router = [
             'file' => $file,
             'controller' => $controller,
-            'action' => $action
+            'action' => $action,
+            'params' => $params
         ];
         return $router;
     }

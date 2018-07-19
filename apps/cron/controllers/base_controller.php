@@ -13,6 +13,9 @@ class Base_Controller {
     public $start_time;
     public $end_time;
 
+    // cli argv
+    public $params = [];
+
     public function __construct() {
         $this->ctx = Ctx::getInstance();
         $this->base_ctx = Base_Ctx::getInstance();

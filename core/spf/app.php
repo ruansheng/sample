@@ -132,25 +132,27 @@ class App {
 
     public function runCron($controller_path) {
         $router = $this->cron_router->route();
+        $file = $router['file'];
+        $controller = $router['controller'];
+        $action = $router['action'];
+        $params = $router['params'];
 
-        $file = $controller_path. $router['file'];
+        $file_path = $controller_path . $file;
 
-        if(!is_file($file)) {
-            trigger_error($file . ' file not found', E_USER_NOTICE);
+        if(!is_file($file_path)) {
+            trigger_error($file_path . ' file not found', E_USER_NOTICE);
             exit(-1);
         }
 
-        require $file;
-
-        $controller = $router['controller'];
-        $action = $router['action'];
+        require $file_path;
 
         if(!class_exists($controller, false)) {
-            trigger_error($file . ' controller not found', E_USER_NOTICE);
+            trigger_error($controller . ' controller not found', E_USER_NOTICE);
             exit(-1);
         }
 
         $controller_obj = new $controller();
+        $controller_obj->params = $params;
         $controller_obj->file = $file;
         $controller_obj->method = $action;
         $controller_obj->start_time = microtime(true);
