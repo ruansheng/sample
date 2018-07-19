@@ -7,12 +7,19 @@
  * @property RpcRouter  $rpc_router
  */
 class App {
+
     static $instance = null;
 
+    /**
+     * App constructor.
+     */
     private function __construct(){}
 
     private function __clone(){}
 
+    /**
+     * @return App|null
+     */
     public static function getInstance() {
         if(self::$instance === null) {
             self::$instance = new self();
