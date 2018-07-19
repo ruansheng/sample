@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @param $errno
+ * @param $errstr
+ * @param $errfile
+ * @param $errline
+ * @return bool
+ */
 function errorHandler($errno, $errstr, $errfile, $errline) {
     if (!(error_reporting() & $errno)) {
         return false;
