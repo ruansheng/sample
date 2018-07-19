@@ -7,6 +7,9 @@ class Request {
 
     private $params = [];
 
+    /**
+     * Request constructor.
+     */
     public function __construct(){
         $this->params = $_REQUEST;
     }

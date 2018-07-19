@@ -8,6 +8,10 @@ class Core_Ctx {
     protected $component = [];
     protected $prefix = '';
 
+    /**
+     * Core_Ctx constructor.
+     * @param null $ctx
+     */
     public function __construct($ctx = null){
         $class = get_class($this);
         if(!$this->prefix) {
@@ -18,6 +22,10 @@ class Core_Ctx {
         }
     }
 
+    /**
+     * @param $key
+     * @return mixed|null
+     */
     public function __get($key) {
         if(!isset($this->component[$key])) {
             $func = 'get' . $key;
@@ -35,4 +43,5 @@ class Core_Ctx {
 
         return isset($this->component[$key]) ? $this->component[$key] : null;
     }
+
 }

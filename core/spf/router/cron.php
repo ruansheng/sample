@@ -5,8 +5,17 @@
  */
 class CronRouter implements Router {
 
-    public function __construct(){}
+    /**
+     * CronRouter constructor.
+     */
+    public function __construct(){
 
+    }
+
+    /**
+     * @param $argv
+     * @return array
+     */
     private function parseArgv($argv) {
         if(count($argv) == 1) {
             $this->echoHelp();
@@ -52,6 +61,9 @@ class CronRouter implements Router {
         return $router;
     }
 
+    /**
+     * echo Help
+     */
     private function echoHelp() {
         echo 'Usage: php index_cron.php [options]' . PHP_EOL;
         echo '      -h                       show help' . PHP_EOL;
@@ -60,9 +72,13 @@ class CronRouter implements Router {
         echo '      -p=<params>             call method params. example: -p="a=1&b=2"' . PHP_EOL;
     }
 
+    /**
+     * @return array
+     */
     public function route() {
         global $argv;
         $router = $this->parseArgv($argv);
         return $router;
     }
+
 }

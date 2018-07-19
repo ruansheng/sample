@@ -5,6 +5,10 @@
  */
 class Autoloader {
 
+    /**
+     * @param $class
+     * @return bool
+     */
     public static function autoload($class) {
         $class = strtolower($class);
         $pos = explode('_', $class);
@@ -22,6 +26,9 @@ class Autoloader {
         return false;
     }
 
+    /**
+     * registerAutoload
+     */
     public static function registerAutoload() {
         spl_autoload_register("Autoloader::autoload");
     }

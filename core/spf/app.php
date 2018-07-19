@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class App
  * @property WebRouter  $web_router
@@ -13,9 +14,13 @@ class App {
     /**
      * App constructor.
      */
-    private function __construct(){}
+    private function __construct(){
 
-    private function __clone(){}
+    }
+
+    private function __clone(){
+
+    }
 
     /**
      * @return App|null
@@ -214,4 +219,5 @@ class App {
         $controller_obj->end_time = microtime(true);
         call_user_func([$controller_obj, "info"]);
     }
+
 }

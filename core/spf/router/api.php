@@ -8,8 +8,16 @@ class ApiRouter implements Router {
     public $controller = 'index';
     public $action = 'index';
 
-    public function __construct(){}
+    /**
+     * ApiRouter constructor.
+     */
+    public function __construct(){
 
+    }
+
+    /**
+     * @return string
+     */
     private function parseUri() {
         $request_uri = $_SERVER['REQUEST_URI'];
         $pos = strpos($request_uri, '?');
@@ -21,6 +29,9 @@ class ApiRouter implements Router {
         return trim($uri, '/');
     }
 
+    /**
+     * @return array
+     */
     public function route() {
         $uri = $this->parseUri();
         $parts = empty($uri) ? [] : explode('/', $uri);
@@ -51,4 +62,5 @@ class ApiRouter implements Router {
             'file' => $file
         ];
     }
+
 }

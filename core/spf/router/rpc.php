@@ -7,6 +7,9 @@ class RpcRouter implements Router {
 
     private $services;
 
+    /**
+     * RpcRouter constructor.
+     */
     public function __construct(){
         $this->services = $GLOBALS['services'];
     }
@@ -74,6 +77,9 @@ class RpcRouter implements Router {
         return $router;
     }
 
+    /**
+     * @return array
+     */
     public function route() {
         // parse rpc params
         $input_data = file_get_contents('php://input', 'r');
