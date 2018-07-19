@@ -107,7 +107,14 @@ class App {
         }
 
         // reflect
-        $reflect_class = new ReflectionClass($controller);
+        $reflect_class = null;
+        try {
+            $reflect_class = new ReflectionClass($controller);
+        } catch (Exception $e){
+            trigger_error($controller . ' controller reflect fail:' . $e->getMessage(), E_USER_NOTICE);
+            exit(-1);
+        }
+
         if(!$reflect_class->hasMethod($action)) {
             trigger_error($controller . ' class not exists method:' . $action, E_USER_NOTICE);
             exit(-1);
@@ -147,9 +154,8 @@ class App {
         $controller_obj->file = $file;
         $controller_obj->method = $action;
         $controller_obj->start_time = microtime(true);
-        $controller_obj->$action();
+        call_user_func_array([$controller_obj, $action], []);
         $controller_obj->end_time = microtime(true);
-        $info = "info";
-        $controller_obj->$info();
+        call_user_func([$controller_obj, "info"]);
     }
 }

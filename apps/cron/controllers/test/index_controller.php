@@ -7,7 +7,7 @@ class Test_Index_Controller extends Base_Controller {
     }
 
     public function index() {
-        sleep(3);
+        sleep(1);
         echo "crontab index method" . PHP_EOL;
     }
 }

@@ -22,10 +22,12 @@ class Base_Controller {
         $memory_value = sprintf("%5.2f M", memory_get_peak_usage(true) / 1024 / 1024);
         $cost_time = sprintf("%5.3f S", ($this->end_time - $this->start_time));
         $hostname = gethostname();
+        echo '--------------------------------------------------------------------------' . PHP_EOL;
         echo 'file: ' . $this->file . PHP_EOL;
         echo 'method: ' . $this->method . PHP_EOL;
         echo 'memory: ' . $memory_value . PHP_EOL;
         echo 'spend_time: ' . $cost_time . PHP_EOL;
         echo 'host: ' . $hostname . PHP_EOL;
+        echo '--------------------------------------------------------------------------' . PHP_EOL;
     }
 }

@@ -58,3 +58,17 @@ Example:
 Call in other php file:
     helloWorld();    
 ```
+
+## cron
+```
+# php index_cron.php -c="test/index" -m="index" -p="a=1&b=2"
+show:
+    crontab index method
+    --------------------------------------------------------------------------
+    file: /Users/ruansheng/PhpstormProjects/sample/apps/cron/controllers//test/index_controller.php
+    method: index
+    memory:  2.00 M
+    spend_time: 1.000 S
+    host: ruanshengdeMacBook-Pro.local
+    --------------------------------------------------------------------------
+```
