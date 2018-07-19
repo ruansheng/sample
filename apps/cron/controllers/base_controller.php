@@ -16,11 +16,36 @@ class Base_Controller {
     // cli argv
     public $params = [];
 
+    /**
+     * Base_Controller constructor.
+     */
     public function __construct() {
         $this->ctx = Ctx::getInstance();
         $this->base_ctx = Base_Ctx::getInstance();
     }
 
+    /**
+     * @param $key
+     * @param string $default
+     * @return mixed
+     */
+    public function get($key, $default = '') {
+        if(!isset($this->params[$key])) {
+            return $default;
+        }
+        return $this->params[$key];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAll() {
+        return $this->params;
+    }
+
+    /**
+     * echo cron run info
+     */
     public function info() {
         $memory_value = sprintf("%5.2f M", memory_get_peak_usage(true) / 1024 / 1024);
         $cost_time = sprintf("%5.3f S", ($this->end_time - $this->start_time));
