@@ -6,8 +6,9 @@ class Test_Index_Controller extends Base_Controller {
         parent::__construct();
     }
 
-    public function demo() {
-        $this->output['name'] = 'rs';
+    public function demo($a, $b) {
+        $this->output['a'] = 1;
+        $this->output['b'] = 2;
         $this->responseJson();
     }
 }

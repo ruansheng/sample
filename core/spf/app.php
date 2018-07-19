@@ -81,26 +81,46 @@ class App {
     public function runRpc($controller_path) {
         $router = $this->rpc_router->route();
 
-        $file = $controller_path. $router['file'];
-
-        if(!is_file($file)) {
-            trigger_error($file . ' file not found', E_USER_NOTICE);
-            exit(-1);
-        }
-
-        require $file;
-
+        $flag = $router['flag'];
+        $file = $router['file'];
         $controller = $router['controller'];
         $action = $router['action'];
         $params = $router['params'];
 
+        if(!$flag) {
+            trigger_error('route parse error:' . $router['msg'], E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $file_path = $controller_path . $file;
+
+        if(!is_file($file_path)) {
+            trigger_error($file_path . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file_path;
+
         if(!class_exists($controller, false)) {
-            trigger_error($file . ' controller not found', E_USER_NOTICE);
+            trigger_error($controller . ' controller not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        // reflect
+        $reflect_class = new ReflectionClass($controller);
+        if(!$reflect_class->hasMethod($action)) {
+            trigger_error($controller . ' class not exists method:' . $action, E_USER_NOTICE);
+            exit(-1);
+        }
+        $reflect_method = $reflect_class->getMethod($action);
+        $parameters = $reflect_method->getParameters();
+        if(count($params) > count($parameters)) {
+            trigger_error($controller . ' class not exists method:' . $action . ' params count error', E_USER_NOTICE);
             exit(-1);
         }
 
         $controller_obj = new $controller();
-        call_user_func_array([$controller_obj, $action], $params);
+        $reflect_method->invokeArgs($controller_obj, $params);
     }
 
     public function runCron($controller_path) {

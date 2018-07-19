@@ -11,48 +11,82 @@ class RpcRouter {
         $this->services = $GLOBALS['services'];
     }
 
-    private function parseArgv() {
-        // parse rpc params
-        $input_data = file_get_contents('php://input', 'r');
-        $input = json_decode($input_data, true);
+    /**
+     * @param $input array
+     * @return array
+     */
+    private function parseArgv($input) {
+        $rid = isset($input['rid']) ? $input['rid'] : '';               //    request id
+        $service = isset($input['service']) ? $input['service'] : '';   //    request service
+        $method  = isset($input['method']) ? $input['method'] : '';
+        $args    = isset($input['args']) ? $input['args'] : [];
 
-        $service = $input['service'];   //    test_index
-        $method  = $input['method'];
-        $args    = $input['args'];
+        $router = [
+            'flag' => false,
+            'file' => '',
+            'controller' => '',
+            'action' => '',
+            'params' => [],
+            'msg' => ''
+        ];
 
+        if(empty($rid)) {
+            $router['msg'] = 'rid is empty';
+            return $router;
+        }
+
+        if(empty($service)) {
+            $router['msg'] = 'service is empty';
+            return $router;
+        }
+
+        if(empty($method)) {
+            $router['msg'] = sprintf("'%s' service: '%s' method is empty", $service, $method);
+            return $router;
+        }
+
+        // service config
         if(!array_key_exists($service, $this->services)) {
-            return [];
+            $router['msg'] = sprintf("'%s' service not exists", $service);
+            return $router;
         }
 
-        $service_array = $this->services[$service];
-        $interface = $service_array['interface'];
-        if(strpos($interface, "/") === false) {
-            return [];
+        $config = $this->services[$service];
+        $interface = isset($config['interface']) ? $config['interface'] : '';
+        if(empty($interface) || strpos($interface, "/") === false) {
+            $router['msg'] = sprintf("%s service interface is error", $service);
+            return $router;
         }
-
-        // file
-        $file = '/' . $interface . '_controller.php';
-        $action = $method;
-        $params = $args;
 
         // controlelr
         $parts = explode("/", $interface);
-        $parts = array_map(function ($v){
+        $parts = array_map(function($v) {
             return ucfirst($v);
         }, $parts);
-        $controller = implode('_', $parts) . '_Controller';
 
-        $router = [
-            'file' => $file,
-            'controller' => $controller,
-            'action' => $action,
-            'params' => $params
-        ];
+        // parse success
+        $router['flag'] = true;
+        $router['file'] = sprintf('/%s_controller.php', $interface);                   // example:   /test/index_controller.php
+        $router['controller'] = sprintf('%s_Controller', implode('_', $parts));  // example:   Test_Index_Controller.php
+        $router['action'] = $method;
+        $router['params'] = $args;
+
         return $router;
     }
 
     public function route() {
-        $router = $this->parseArgv();
+        // parse rpc params
+        $input_data = file_get_contents('php://input', 'r');
+        $input = json_decode($input_data, true);
+
+        $input = [
+            'rid' => 'xxx',
+            'service' => 'test',
+            'method' => 'demo',
+            'args' => [1,2],
+        ];
+
+        $router = $this->parseArgv($input);
         return $router;
     }
 }
