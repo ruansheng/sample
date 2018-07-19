@@ -1,8 +1,7 @@
 <?php
 $GLOBALS['services'] = [
     'test' => [
-        'service' => 'test',
-        'interface' => 'Test_Index_Controller',
+        'interface' => 'test/index',
         'timeout' => 0.3
     ]
 ];

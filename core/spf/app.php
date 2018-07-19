@@ -92,6 +92,7 @@ class App {
 
         $controller = $router['controller'];
         $action = $router['action'];
+        $params = $router['params'];
 
         if(!class_exists($controller, false)) {
             trigger_error($file . ' controller not found', E_USER_NOTICE);
@@ -99,7 +100,7 @@ class App {
         }
 
         $controller_obj = new $controller();
-        $controller_obj->$action();
+        call_user_func_array([$controller_obj, $action], $params);
     }
 
     public function runCron($controller_path) {

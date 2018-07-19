@@ -5,69 +5,54 @@
  */
 class RpcRouter {
 
-    public function __construct(){}
+    private $services;
 
-    private function parseArgv($params) {
+    public function __construct(){
+        $this->services = $GLOBALS['services'];
+    }
+
+    private function parseArgv() {
         // parse rpc params
         $input_data = file_get_contents('php://input', 'r');
         $input = json_decode($input_data, true);
 
-        $service = $input['service'];//    /service/php/test_index
-        $args    = $input['args'];
+        $service = $input['service'];   //    test_index
         $method  = $input['method'];
+        $args    = $input['args'];
 
-
-        if(count($params) == 1) {
-            $this->echoHelp();
-            exit;
+        if(!array_key_exists($service, $this->services)) {
+            return [];
         }
 
-        $file = "";
-        $controller = "";
-        $action = "";
-        foreach($params as $index => $spe) {
-            if($index == 0) {
-                continue;
-            }
-            if(strpos($spe, "-c=") === 0) {
-                $value = substr($spe, 3);
-                if(strpos($spe, "/") === false) {
-                    continue;
-                }
-
-                // file
-                $file = '/' . $value . '_controller.php';
-
-                // controlelr
-                $parts = explode("/", $value);
-                $parts = array_map(function ($v){
-                    return ucfirst($v);
-                }, $parts);
-                $controller = implode('_', $parts) . '_Controller';
-            } elseif (strpos($spe, "-m=") === 0) {
-                $action = substr($spe, 3);
-            }
+        $service_array = $this->services[$service];
+        $interface = $service_array['interface'];
+        if(strpos($interface, "/") === false) {
+            return [];
         }
+
+        // file
+        $file = '/' . $interface . '_controller.php';
+        $action = $method;
+        $params = $args;
+
+        // controlelr
+        $parts = explode("/", $interface);
+        $parts = array_map(function ($v){
+            return ucfirst($v);
+        }, $parts);
+        $controller = implode('_', $parts) . '_Controller';
 
         $router = [
             'file' => $file,
             'controller' => $controller,
-            'action' => $action
+            'action' => $action,
+            'params' => $params
         ];
         return $router;
     }
 
-    private function echoHelp() {
-        echo 'Usage: php index_cron.php [options]' . PHP_EOL;
-        echo '      -h                       show help' . PHP_EOL;
-        echo '      -c=<controller name>    route call controller name. example: -c="test/index"' . PHP_EOL;
-        echo '      -m=<method name>        route call method name. example: -m="index"' . PHP_EOL;
-        echo '      -p=<params>             call method params. example: -p="a=1&b=2"' . PHP_EOL;
-    }
-
     public function route() {
-        global $argv;
-        $router = $this->parseArgv($argv);
+        $router = $this->parseArgv();
         return $router;
     }
 }
