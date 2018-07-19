@@ -136,6 +136,11 @@ class App {
     }
 
     public function runCron($controller_path) {
+        if(php_sapi_name() != 'cli') {
+            trigger_error('run mode must is cli', E_USER_NOTICE);
+            exit(-1);
+        }
+
         $router = $this->cron_router->route();
         $file = $router['file'];
         $controller = $router['controller'];
