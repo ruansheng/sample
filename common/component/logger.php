@@ -26,7 +26,7 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
 
     $timezone = date_default_timezone_get();
     $request_uri_content = $request_uri ? sprintf('   [REQUEST_URI:%s]', $request_uri) : '   [REQUEST_URI: Unkown]';
-    $text = sprintf("[ %s %s] %s  %s in %s  on line %s %s \n", date('d-M-Y H:i:s'), $timezone, $error_type, $errstr, $errfile, $errline, $request_uri_content);
+    $text = sprintf("[%s %s] %s  %s in %s  on line %s %s \n", date('d-M-Y H:i:s'), $timezone, $error_type, $errstr, $errfile, $errline, $request_uri_content);
 
     $log_file = isset($GLOBALS['log_file']) ? $GLOBALS['log_file'] : '/var/log/php.fpm.log';
     if(is_writeable($log_file)) {

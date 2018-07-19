@@ -162,6 +162,12 @@ class App {
         }
 
         $controller_obj = new $controller();
+
+        if(!method_exists($controller_obj, $action)) {
+            trigger_error($controller . ' controller not exists method ' . $action, E_USER_NOTICE);
+            exit(-1);
+        }
+
         $controller_obj->params = $params;
         $controller_obj->file = $file;
         $controller_obj->method = $action;
