@@ -41,6 +41,11 @@ class App {
      * @param $controller_path
      */
     public function runApi($controller_path) {
+        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi'])) {
+            trigger_error('run mode must is cgi or cgi-fcgi', E_USER_NOTICE);
+            exit(-1);
+        }
+
         $router = $this->api_router->route();
 
         $file = $router['file'];
@@ -69,6 +74,11 @@ class App {
      * @param $controller_path
      */
     public function runWeb($controller_path) {
+        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi'])) {
+            trigger_error('run mode must is cgi or cgi-fcgi', E_USER_NOTICE);
+            exit(-1);
+        }
+
         $router = $this->web_router->route();
 
         $file = $router['file'];
@@ -97,6 +107,11 @@ class App {
      * @param $controller_path
      */
     public function runRpc($controller_path) {
+        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi'])) {
+            trigger_error('run mode must is cgi or cgi-fcgi', E_USER_NOTICE);
+            exit(-1);
+        }
+
         $router = $this->rpc_router->route();
 
         $flag = $router['flag'];
