@@ -61,6 +61,16 @@ Call in other php file:
 
 ## cron
 ```
+# php index_cron.php
+or
+# php index_cron.php -h
+show:
+    Usage: php index_cron.php [options]
+          -h                       show help
+          -c=<controller name>    route call controller name. example: -c="test/index"
+          -m=<method name>        route call method name. example: -m="index"
+          -p=<params>             call method params. example: -p="a=1&b=2"
+
 # php index_cron.php -c="test/index" -m="index" -p="a=1&b=2"
 show:
     crontab index method
