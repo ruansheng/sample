@@ -3,7 +3,7 @@
 /**
  * Class WebRouter
  */
-class WebRouter {
+class WebRouter implements Router {
 
     public $controller = 'index';
     public $action = 'index';

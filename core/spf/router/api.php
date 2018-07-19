@@ -3,7 +3,7 @@
 /**
  * Class ApiRouter
  */
-class ApiRouter {
+class ApiRouter implements Router {
 
     public $controller = 'index';
     public $action = 'index';

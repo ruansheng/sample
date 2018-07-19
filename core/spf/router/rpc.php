@@ -3,7 +3,7 @@
 /**
  * Class RpcRouter
  */
-class RpcRouter {
+class RpcRouter implements Router {
 
     private $services;
 

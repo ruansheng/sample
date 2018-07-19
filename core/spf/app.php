@@ -20,6 +20,10 @@ class App {
         return self::$instance;
     }
 
+    /**
+     * @param $key
+     * @return ApiRouter|CronRouter|null|RpcRouter|WebRouter
+     */
     public function __get($key) {
         if($key == 'web_router') {
             return new WebRouter();
@@ -30,9 +34,12 @@ class App {
         } else if ($key == 'rpc_router') {
             return new RpcRouter();
         }
-        return null;
+        return new WebRouter();
     }
 
+    /**
+     * @param $controller_path
+     */
     public function runApi($controller_path) {
         $router = $this->api_router->route();
 
@@ -58,6 +65,9 @@ class App {
         call_user_func([$controller_obj, $action]);
     }
 
+    /**
+     * @param $controller_path
+     */
     public function runWeb($controller_path) {
         $router = $this->web_router->route();
 
@@ -83,6 +93,9 @@ class App {
         call_user_func([$controller_obj, $action]);
     }
 
+    /**
+     * @param $controller_path
+     */
     public function runRpc($controller_path) {
         $router = $this->rpc_router->route();
 
@@ -135,6 +148,9 @@ class App {
         $reflect_method->invokeArgs($controller_obj, $params);
     }
 
+    /**
+     * @param $controller_path
+     */
     public function runCron($controller_path) {
         if(php_sapi_name() != 'cli') {
             trigger_error('run mode must is cli', E_USER_NOTICE);

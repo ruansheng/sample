@@ -3,7 +3,7 @@
 /**
  * Class CronRouter
  */
-class CronRouter {
+class CronRouter implements Router {
 
     public function __construct(){}
 
