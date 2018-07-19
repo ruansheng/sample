@@ -2,6 +2,7 @@
 /**
  * Class App
  * @property WebRouter  $web_router
+ * @property WebRouter  $api_router
  * @property CronRouter $cron_router
  * @property RpcRouter  $rpc_router
  */
@@ -22,6 +23,8 @@ class App {
     public function __get($key) {
         if($key == 'web_router') {
             return new WebRouter();
+        } else if ($key == 'api_router') {
+            return new ApiRouter();
         } else if ($key == 'cron_router') {
             return new CronRouter();
         } else if ($key == 'rpc_router') {
@@ -31,51 +34,53 @@ class App {
     }
 
     public function runApi($controller_path) {
-        $router = $this->web_router->route();
+        $router = $this->api_router->route();
 
-        $file = $controller_path. $router['file'];
-
-        if(!is_file($file)) {
-            trigger_error($file . ' file not found', E_USER_NOTICE);
-            exit(-1);
-        }
-
-        require $file;
-
+        $file = $router['file'];
         $controller = $router['controller'];
         $action = $router['action'];
 
+        $file_path = $controller_path . $file;
+
+        if(!is_file($file_path)) {
+            trigger_error($file_path . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file_path;
+
         if(!class_exists($controller, false)) {
-            trigger_error($file . ' controller not found', E_USER_NOTICE);
+            trigger_error($controller . ' controller not found', E_USER_NOTICE);
             exit(-1);
         }
 
         $controller_obj = new $controller();
-        $controller_obj->$action();
+        call_user_func([$controller_obj, $action]);
     }
 
     public function runWeb($controller_path) {
         $router = $this->web_router->route();
 
-        $file = $controller_path. $router['file'];
-
-        if(!is_file($file)) {
-            trigger_error($file . ' file not found', E_USER_NOTICE);
-            exit(-1);
-        }
-
-        require $file;
-
+        $file = $router['file'];
         $controller = $router['controller'];
         $action = $router['action'];
 
+        $file_path = $controller_path . $file;
+
+        if(!is_file($file_path)) {
+            trigger_error($file_path . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file_path;
+
         if(!class_exists($controller, false)) {
-            trigger_error($file . ' controller not found', E_USER_NOTICE);
+            trigger_error($controller . ' controller not found', E_USER_NOTICE);
             exit(-1);
         }
 
         $controller_obj = new $controller();
-        $controller_obj->$action();
+        call_user_func([$controller_obj, $action]);
     }
 
     public function runRpc($controller_path) {
