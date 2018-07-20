@@ -69,7 +69,7 @@ class RpcRouter implements Router {
 
         // parse success
         $router['flag'] = true;
-        $router['file'] = sprintf('/%s_controller.php', $interface);                   // example:   /test/index_controller.php
+        $router['file'] = sprintf('%s_controller.php', $interface);                   // example:    test/index_controller.php
         $router['controller'] = sprintf('%s_Controller', implode('_', $parts));  // example:   Test_Index_Controller.php
         $router['action'] = $method;
         $router['params'] = $args;
@@ -79,18 +79,12 @@ class RpcRouter implements Router {
 
     /**
      * @return array
+     * @deprecated $input = ['rid' => 'rid', 'service' => 'test','method' => 'demo','args' => [1,2]];
      */
     public function route() {
         // parse rpc params
         $input_data = file_get_contents('php://input', 'r');
         $input = json_decode($input_data, true);
-
-        $input = [
-            'rid' => 'xxx',
-            'service' => 'test',
-            'method' => 'demo',
-            'args' => [1,2],
-        ];
 
         $router = $this->parseArgv($input);
         return $router;
