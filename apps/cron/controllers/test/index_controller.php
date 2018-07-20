@@ -6,6 +6,11 @@ class Test_Index_Controller extends Base_Controller {
         parent::__construct();
     }
 
+    public function test() {
+        $ret = $this->base_ctx->rpc->direct->test->sayHello(uniqid());
+        _dump($ret);
+    }
+
     public function index() {
         sleep(1);
         _dump($this->get("a"));

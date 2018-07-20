@@ -28,7 +28,7 @@ class Base_Ctx extends Core_Ctx {
                 'timeout' => 0.3
             ],
             'direct' => [
-                'host' => '172.16.21.243',
+                'host' => '172.16.20.183',
                 'port' => 8628,
                 'timeout' => 0.3
             ],

@@ -56,11 +56,11 @@ class Base_Rpc_Client_Redis {
             trigger_error($error_str, E_USER_WARNING);
         }
 
-        if(empty($result) || !isset($ret['ec']) || $ret['ec'] != 200) {
+        if(empty($result) || !isset($result['ec']) || $result['ec'] != 200) {
             return null;
         }
 
-        return isset($ret['data']) ? $ret['data'] : [];
+        return isset($result['data']) ? $result['data'] : [];
     }
 
     public function getCmd($service, $method, $args) {
