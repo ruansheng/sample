@@ -119,9 +119,15 @@ class App {
      * @param $controller_path
      */
     public function runRpc($controller_path) {
+        $response = [
+            'ec' => 401,
+            'em' => "",
+            'data' => []
+        ];
         if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi'])) {
             trigger_error('run mode must is cgi or cgi-fcgi', E_USER_NOTICE);
-            exit(-1);
+            $response['em'] = 'run mode must is cgi or cgi-fcgi';
+            exit(json_encode($response));
         }
 
         $router = $this->rpc_router->route();
@@ -134,21 +140,24 @@ class App {
 
         if(!$flag) {
             trigger_error('route parse error:' . $router['msg'], E_USER_NOTICE);
-            exit(-1);
+            $response['em'] = 'route parse error:' . $router['msg'];
+            exit(json_encode($response));
         }
 
         $file_path = $controller_path . $file;
 
         if(!is_file($file_path)) {
             trigger_error($file_path . ' file not found', E_USER_NOTICE);
-            exit(-1);
+            $response['em'] = $file_path . ' file not found';
+            exit(json_encode($response));
         }
 
         require $file_path;
 
         if(!class_exists($controller, false)) {
             trigger_error($controller . ' controller not found', E_USER_NOTICE);
-            exit(-1);
+            $response['em'] = $controller . ' controller not found';
+            exit(json_encode($response));
         }
 
         // reflect
@@ -157,18 +166,21 @@ class App {
             $reflect_class = new ReflectionClass($controller);
         } catch (Exception $e){
             trigger_error($controller . ' controller reflect fail:' . $e->getMessage(), E_USER_NOTICE);
-            exit(-1);
+            $response['em'] = $controller . ' controller reflect fail:' . $e->getMessage();
+            exit(json_encode($response));
         }
 
         if(!$reflect_class->hasMethod($action)) {
             trigger_error($controller . ' class not exists method:' . $action, E_USER_NOTICE);
-            exit(-1);
+            $response['em'] = $controller . ' class not exists method:' . $action;
+            exit(json_encode($response));
         }
         $reflect_method = $reflect_class->getMethod($action);
         $parameters = $reflect_method->getParameters();
         if(count($params) > count($parameters)) {
             trigger_error($controller . ' class not exists method:' . $action . ' params count error', E_USER_NOTICE);
-            exit(-1);
+            $response['em'] = $controller . ' class not exists method:' . $action . ' params count error';
+            exit(json_encode($response));
         }
 
         $controller_obj = new $controller();
