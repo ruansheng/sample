@@ -53,7 +53,7 @@ class App_Router implements Router {
     }
 
     public function run($config) {
-        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi'])) {
+        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi', 'fpm-fcgi'])) {
             trigger_error('run mode must is cgi or cgi-fcgi', E_USER_NOTICE);
             exit(-1);
         }

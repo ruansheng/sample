@@ -24,25 +24,14 @@ if(is_file(VENDOR_AUTOLOAD_FILE)) {
     require_once VENDOR_AUTOLOAD_FILE;
 }
 
-// require autoloader
+// require core
 require_once CORE_DIR . '/spf/autoloader.php';
-
-// require ctx
 require_once CORE_DIR . '/spf/ctx.php';
+require_once CORE_DIR . '/spf/app.php';
+require_once CORE_DIR . '/spf/router.php';
 
 // require base
 require_once BASE_DIR . '/init.php';
 
-// require core
-require_once CORE_DIR . '/spf/app.php';
-
 // require app models
 require_once MODELS_DIR . '/ctx.php';
-
-/*
-// require router
-require_once CORE_DIR . '/spf/router/interface.php';
-require_once CORE_DIR . '/spf/router/web.php';
-require_once CORE_DIR . '/spf/router/cron.php';
-require_once CORE_DIR . '/spf/router/rpc.php';
-*/

@@ -62,13 +62,59 @@ class App_Router implements Router {
     }
 
     /**
-     * @param $config
      * @return array
      */
-    public function run($config) {
+    public function route() {
         global $argv;
         $router = $this->parseArgv($argv);
         return $router;
+    }
+
+    /**
+     * @param $config
+     */
+    public function run($config) {
+        $controller_path = isset($config['controller_path']) ? $config['controller_path'] : '';
+
+        if(php_sapi_name() != 'cli') {
+            trigger_error('run mode must is cli', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $router = $this->route();
+        $file = $router['file'];
+        $controller = $router['controller'];
+        $action = $router['action'];
+        $params = $router['params'];
+
+        $file_path = $controller_path . $file;
+
+        if(!is_file($file_path)) {
+            trigger_error($file_path . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file_path;
+
+        if(!class_exists($controller, false)) {
+            trigger_error($controller . ' controller not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $controller_obj = new $controller();
+
+        if(!method_exists($controller_obj, $action)) {
+            trigger_error($controller . ' controller not exists method ' . $action, E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $controller_obj->params = $params;
+        $controller_obj->file = $file;
+        $controller_obj->method = $action;
+        $controller_obj->start_time = microtime(true);
+        call_user_func_array([$controller_obj, $action], []);
+        $controller_obj->end_time = microtime(true);
+        call_user_func([$controller_obj, "info"]);
     }
 
 }

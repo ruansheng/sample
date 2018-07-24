@@ -3,7 +3,7 @@
 defined('PRO_ROOT_DIR') || define('PRO_ROOT_DIR', dirname(__FILE__));
 
 // require core
-require_once CORE_DIR . '/init.php';
+require_once PRO_ROOT_DIR . '/core/init.php';
 
 // require app
 require_once APPS_DIR . '/api/init_api.php';

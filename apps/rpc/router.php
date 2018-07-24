@@ -74,17 +74,90 @@ class App_Router implements Router {
     }
 
     /**
-     * @param $config
      * @return array
-     * @deprecated $input = ['rid' => 'rid', 'service' => 'test','method' => 'demo','args' => [1,2]];
+     * $input = ['rid' => 'rid', 'service' => 'test','method' => 'demo','args' => [1,2]];
      */
-    public function run($config) {
+    public function route() {
         // parse rpc params
         $input_data = file_get_contents('php://input', 'r');
         $input = json_decode($input_data, true);
 
         $router = $this->parseArgv($input);
         return $router;
+    }
+
+    /**
+     * @param $config
+     */
+    public function run($config) {
+        $controller_path = isset($config['controller_path']) ? $config['controller_path'] : '';
+
+        $response = [
+            'ec' => 401,
+            'em' => "",
+            'data' => []
+        ];
+        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi', 'fpm-fcgi'])) {
+            trigger_error('run mode must is cgi or cgi-fcgi or fpm-fcgi', E_USER_NOTICE);
+            $response['em'] = 'run mode must is cgi or cgi-fcgi';
+            exit(json_encode($response));
+        }
+
+        $router = $this->route();
+
+        $flag = $router['flag'];
+        $file = $router['file'];
+        $controller = $router['controller'];
+        $action = $router['action'];
+        $params = $router['params'];
+
+        if(!$flag) {
+            trigger_error('route parse error:' . $router['msg'], E_USER_NOTICE);
+            $response['em'] = 'route parse error:' . $router['msg'];
+            exit(json_encode($response));
+        }
+
+        $file_path = $controller_path . $file;
+
+        if(!is_file($file_path)) {
+            trigger_error($file_path . ' file not found', E_USER_NOTICE);
+            $response['em'] = $file_path . ' file not found';
+            exit(json_encode($response));
+        }
+
+        require $file_path;
+
+        if(!class_exists($controller, false)) {
+            trigger_error($controller . ' controller not found', E_USER_NOTICE);
+            $response['em'] = $controller . ' controller not found';
+            exit(json_encode($response));
+        }
+
+        // reflect
+        $reflect_class = null;
+        try {
+            $reflect_class = new ReflectionClass($controller);
+        } catch (Exception $e){
+            trigger_error($controller . ' controller reflect fail:' . $e->getMessage(), E_USER_NOTICE);
+            $response['em'] = $controller . ' controller reflect fail:' . $e->getMessage();
+            exit(json_encode($response));
+        }
+
+        if(!$reflect_class->hasMethod($action)) {
+            trigger_error($controller . ' class not exists method:' . $action, E_USER_NOTICE);
+            $response['em'] = $controller . ' class not exists method:' . $action;
+            exit(json_encode($response));
+        }
+        $reflect_method = $reflect_class->getMethod($action);
+        $parameters = $reflect_method->getParameters();
+        if(count($params) > count($parameters)) {
+            trigger_error($controller . ' class not exists method:' . $action . ' params count error', E_USER_NOTICE);
+            $response['em'] = $controller . ' class not exists method:' . $action . ' params count error';
+            exit(json_encode($response));
+        }
+
+        $controller_obj = new $controller();
+        $reflect_method->invokeArgs($controller_obj, $params);
     }
 
 }
