@@ -2,10 +2,6 @@
 
 /**
  * Class App
- * @property WebRouter  $web_router
- * @property WebRouter  $api_router
- * @property CronRouter $cron_router
- * @property RpcRouter  $rpc_router
  */
 class App {
 
@@ -33,53 +29,16 @@ class App {
     }
 
     /**
-     * @param $key
-     * @return ApiRouter|CronRouter|null|RpcRouter|WebRouter
+     * @param $config
+     * @return bool
      */
-    public function __get($key) {
-        if($key == 'web_router') {
-            return new WebRouter();
-        } else if ($key == 'api_router') {
-            return new ApiRouter();
-        } else if ($key == 'cron_router') {
-            return new CronRouter();
-        } else if ($key == 'rpc_router') {
-            return new RpcRouter();
+    public function run($config) {
+        if(class_exists('App_Router')) {
+            return false;
         }
-        return new WebRouter();
-    }
-
-    /**
-     * @param $controller_path
-     */
-    public function runApi($controller_path) {
-        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi'])) {
-            trigger_error('run mode must is cgi or cgi-fcgi', E_USER_NOTICE);
-            exit(-1);
-        }
-
-        $router = $this->api_router->route();
-
-        $file = $router['file'];
-        $controller = $router['controller'];
-        $action = $router['action'];
-
-        $file_path = $controller_path . $file;
-
-        if(!is_file($file_path)) {
-            trigger_error($file_path . ' file not found', E_USER_NOTICE);
-            exit(-1);
-        }
-
-        require $file_path;
-
-        if(!class_exists($controller, false)) {
-            trigger_error($controller . ' controller not found', E_USER_NOTICE);
-            exit(-1);
-        }
-
-        $controller_obj = new $controller();
-        call_user_func([$controller_obj, $action]);
+        $router = new App_Router();
+        $router->run($config);
+        return true;
     }
 
     /**

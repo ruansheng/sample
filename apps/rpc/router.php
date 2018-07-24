@@ -1,9 +1,5 @@
 <?php
-
-/**
- * Class RpcRouter
- */
-class RpcRouter implements Router {
+class App_Router implements Router {
 
     private $services;
 
@@ -78,10 +74,11 @@ class RpcRouter implements Router {
     }
 
     /**
+     * @param $config
      * @return array
      * @deprecated $input = ['rid' => 'rid', 'service' => 'test','method' => 'demo','args' => [1,2]];
      */
-    public function route() {
+    public function run($config) {
         // parse rpc params
         $input_data = file_get_contents('php://input', 'r');
         $input = json_decode($input_data, true);
@@ -89,4 +86,5 @@ class RpcRouter implements Router {
         $router = $this->parseArgv($input);
         return $router;
     }
+
 }

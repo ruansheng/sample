@@ -1,16 +1,5 @@
 <?php
-
-/**
- * Class CronRouter
- */
-class CronRouter implements Router {
-
-    /**
-     * CronRouter constructor.
-     */
-    public function __construct(){
-
-    }
+class App_Router implements Router {
 
     /**
      * @param $argv
@@ -73,9 +62,10 @@ class CronRouter implements Router {
     }
 
     /**
+     * @param $config
      * @return array
      */
-    public function route() {
+    public function run($config) {
         global $argv;
         $router = $this->parseArgv($argv);
         return $router;

@@ -1,19 +1,8 @@
 <?php
-
-/**
- * Class ApiRouter
- */
-class ApiRouter implements Router {
+class App_Router implements Router {
 
     public $controller = 'index';
     public $action = 'index';
-
-    /**
-     * ApiRouter constructor.
-     */
-    public function __construct(){
-
-    }
 
     /**
      * @return string
@@ -61,6 +50,42 @@ class ApiRouter implements Router {
             'action' => $action,
             'file' => $file
         ];
+    }
+
+    public function run($config) {
+        if(!in_array(php_sapi_name(), ['cgi', 'cgi-fcgi'])) {
+            trigger_error('run mode must is cgi or cgi-fcgi', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $controller_path = isset($config['controller_path']) ? $config['controller_path'] : '';
+        if(empty($controller_path)) {
+            trigger_error('controller_path is empty', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $router = $this->route();
+
+        $file = $router['file'];
+        $controller = $router['controller'];
+        $action = $router['action'];
+
+        $file_path = $controller_path . $file;
+
+        if(!is_file($file_path)) {
+            trigger_error($file_path . ' file not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        require $file_path;
+
+        if(!class_exists($controller, false)) {
+            trigger_error($controller . ' controller not found', E_USER_NOTICE);
+            exit(-1);
+        }
+
+        $controller_obj = new $controller();
+        call_user_func([$controller_obj, $action]);
     }
 
 }
