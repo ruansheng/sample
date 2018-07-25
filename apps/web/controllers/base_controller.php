@@ -9,10 +9,12 @@ class Base_Controller {
     protected $base_ctx;
 
     protected $output = [];
+    private $smarty;
 
     public function __construct() {
         $this->ctx = Ctx::getInstance();
         $this->base_ctx = Base_Ctx::getInstance();
+        $this->smarty = new Sample_Smarty();
     }
 
     /**
@@ -27,4 +29,16 @@ class Base_Controller {
         ];
         exit(json_encode($data));
     }
+
+    /**
+     * @param $template
+     */
+    public function display($template) {
+        header('Content-Type: text/html; charset=utf-8');
+        foreach ($this->output as $key => $val) {
+            $this->smarty->assign($key, $val);
+        }
+        $this->smarty->display($template);
+    }
+
 }

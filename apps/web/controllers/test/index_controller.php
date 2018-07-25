@@ -15,4 +15,9 @@ class Test_Index_Controller extends Base_Controller {
         $this->output['name'] = 'rs';
         $this->responseJson();
     }
+
+    public function view() {
+        $this->output['name'] = 'Rs';
+        $this->display('test/index/view.html');
+    }
 }
