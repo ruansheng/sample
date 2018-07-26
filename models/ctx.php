@@ -16,7 +16,7 @@ class Ctx extends Core_Ctx {
 
     public static function autoload($class) {
         $class = strtolower($class);
-        $file = __DIR__ . 'ctx.php/' . str_replace('_', '/', $class) . '.php';
+        $file = __DIR__ . '/' . str_replace('_', '/', $class) . '.php';
         if(is_file($file)) {
             require_once $file;
         }
