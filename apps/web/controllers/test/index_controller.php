@@ -17,7 +17,8 @@ class Test_Index_Controller extends Base_Controller {
     }
 
     public function view() {
-        $this->output['name'] = 'Rs';
+        $name = $this->ctx->user->manager_index->getTest();
+        $this->output['name'] = $name;
         $this->display('test/index/view.html');
     }
 }

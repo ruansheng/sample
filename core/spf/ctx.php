@@ -4,7 +4,7 @@
  * Class Core_Ctx
  */
 class Core_Ctx {
-
+    protected $ctx;
     protected $component = [];
     protected $prefix = '';
 
@@ -13,6 +13,7 @@ class Core_Ctx {
      * @param null $ctx
      */
     public function __construct($ctx = null){
+        $this->ctx = $ctx ? : $this;
         $class = get_class($this);
         if(!$this->prefix) {
             $pos = strrpos($class, '_');
@@ -28,13 +29,13 @@ class Core_Ctx {
      */
     public function __get($key) {
         if(!isset($this->component[$key])) {
-            $func = 'get' . $key;
+            $func = 'get' . ucfirst($key);
             if(method_exists($this, $func)) {
                 $this->component[$key] = $this->$func();
             } else {
                 $class = $this->prefix . $key;
                 if(class_exists($class)) {
-                    $this->component[$key] = new $class($this);
+                    $this->component[$key] = new $class($this->ctx);
                 } else {
                     trigger_error(get_class($this) . ' key: ' . $key . ' prefix:' . $this->prefix, E_USER_NOTICE);
                 }

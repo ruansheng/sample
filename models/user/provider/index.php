@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Class User_Manager_Index
+ * Class User_Provider_Index
  * @property Ctx $ctx
  */
-class User_Manager_Index {
+class User_Provider_Index {
 
     public function __construct($ctx){
         $this->ctx = $ctx;
     }
 
     public function getTest() {
-        $name = $this->ctx->user->provider_index->getTest();
+        $name = 'hello world provider!';
         return $name;
     }
 }
