@@ -7,7 +7,7 @@ class Test_Index_Controller extends Base_Controller {
     }
 
     public function test() {
-        $ret = $this->base_ctx->rpc->direct->test->sayHello(uniqid());
+        $ret = $this->ctx->base->rpc->direct->test->sayHello(uniqid());
         _dump($ret);
     }
 
