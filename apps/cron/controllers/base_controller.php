@@ -6,7 +6,6 @@
 class Base_Controller {
 
     protected $ctx;
-    protected $base_ctx;
 
     public $file;
     public $method;
@@ -21,7 +20,6 @@ class Base_Controller {
      */
     public function __construct() {
         $this->ctx = Ctx::getInstance();
-        $this->base_ctx = Base_Ctx::getInstance();
     }
 
     /**

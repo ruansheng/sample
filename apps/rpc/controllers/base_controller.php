@@ -6,13 +6,11 @@
 class Base_Controller {
 
     protected $ctx;
-    protected $base_ctx;
 
     protected $output = [];
 
     public function __construct() {
         $this->ctx = Ctx::getInstance();
-        $this->base_ctx = Base_Ctx::getInstance();
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 /**
  * Class Ctx
+ * @property Base_Ctx $base
  * @property User_Ctx $user
  */
 class Ctx extends Core_Ctx {
@@ -29,6 +30,10 @@ class Ctx extends Core_Ctx {
         }
 
         return false;
+    }
+
+    public function getBase() {
+        return Base_Ctx::getInstance();
     }
 
     public function getUser() {
