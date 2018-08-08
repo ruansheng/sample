@@ -11,6 +11,7 @@ defined('CORE_DIR') || define('CORE_DIR', PRO_ROOT_DIR . '/core');
 defined('BASE_DIR') || define('BASE_DIR', PRO_ROOT_DIR . '/base');
 defined('APPS_DIR') || define('APPS_DIR', PRO_ROOT_DIR . '/apps');
 defined('MODELS_DIR') || define('MODELS_DIR', PRO_ROOT_DIR . '/models');
+defined('CONFIG_DIR') || define('CONFIG_DIR', PRO_ROOT_DIR . '/config');
 
 // log collect file
 $GLOBALS['log_file'] = '/var/log/php-fpm.log';

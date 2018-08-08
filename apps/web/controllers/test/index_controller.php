@@ -16,6 +16,12 @@ class Test_Index_Controller extends Base_Controller {
         $this->responseJson();
     }
 
+    public function config() {
+        $config = new Config(CONFIG_DIR . '/local.ini');
+        $array = $config->getAll();
+        _dump($array);
+    }
+
     public function view() {
         $name = $this->ctx->user->manager_index->getTest();
         $this->output['name'] = $name;
