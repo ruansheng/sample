@@ -6,12 +6,13 @@
 class Base_Controller {
 
     protected $ctx;
-
+    public $request;
     protected $output = [];
     private $smarty;
 
     public function __construct() {
         $this->ctx = Ctx::getInstance();
+        $this->request = new Request();
         $this->smarty = new Sample_Smarty();
     }
 
