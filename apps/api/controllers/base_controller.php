@@ -6,11 +6,12 @@
 class Base_Controller {
 
     protected $ctx;
-
+    public $request;
     protected $output = [];
 
     public function __construct() {
         $this->ctx = Ctx::getInstance();
+        $this->request = new Request();
     }
 
     /**
