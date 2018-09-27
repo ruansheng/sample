@@ -31,6 +31,7 @@ require_once CORE_DIR . '/spf/ctx.php';
 require_once CORE_DIR . '/spf/app.php';
 require_once CORE_DIR . '/spf/router.php';
 require_once CORE_DIR . '/spf/config.php';
+require_once CORE_DIR . '/spf/request.php';
 
 // require base
 require_once BASE_DIR . '/init.php';
